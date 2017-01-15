@@ -10,12 +10,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Realm mRealm;
     private RealmResults<Task> mTaskRealmResults;
+    private RealmResults<Task> result;
     private RealmChangeListener mRealmListener = new RealmChangeListener() {
         @Override
         public void onChange(Object element) {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private ListView mListView;
     private TaskAdapter mTaskAdapter;
+    private Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +121,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        //カテゴリ検索の処理
+        searchButton = (Button) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RealmQuery<Task> query = mRealm.where(Task.class);
+                query.equalTo("title", "レッスン8");
+                RealmResults<Task> result = query.findAll();
+            }
+        });
 
         reloadListView();
     }
@@ -146,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+       super.onDestroy();
         mRealm.close();
     }
+
 }
