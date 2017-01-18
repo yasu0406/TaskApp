@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -26,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Realm mRealm;
     private RealmResults<Task> mTaskRealmResults;
-    private RealmResults<Task> result;
     private RealmChangeListener mRealmListener = new RealmChangeListener() {
         @Override
         public void onChange(Object element) {
@@ -60,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // ListViewの設定
         mTaskAdapter = new TaskAdapter(MainActivity.this);
         mListView = (ListView) findViewById(R.id.listView1);
+        searchButton = (Button) findViewById(R.id.searchButton);
 
         // ListViewをタップしたときの処理
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,20 +120,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        //カテゴリ検索の処理
-        searchButton = (Button) findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        //検索処理
+        searchButton.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RealmQuery<Task> query = mRealm.where(Task.class);
-                query.equalTo("title", "レッスン8");
-                RealmResults<Task> result = query.findAll();
+
             }
         });
-
         reloadListView();
     }
-
 
     private void reloadListView() {
 
@@ -148,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             task.setId(mTaskRealmResults.get(i).getId());
             task.setTitle(mTaskRealmResults.get(i).getTitle());
             task.setContents(mTaskRealmResults.get(i).getContents());
+            task.setCategory(mTaskRealmResults.get(i).getCategory());
             task.setDate(mTaskRealmResults.get(i).getDate());
 
             taskArrayList.add(task);
