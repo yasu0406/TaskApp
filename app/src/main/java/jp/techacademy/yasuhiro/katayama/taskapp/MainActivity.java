@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private TaskAdapter mTaskAdapter;
     private Button searchButton;
+    private EditText searchEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         // ListViewの設定
         mTaskAdapter = new TaskAdapter(MainActivity.this);
         mListView = (ListView) findViewById(R.id.listView1);
+        searchEdit = (EditText) findViewById(R.id.category_edit_text);
         searchButton = (Button) findViewById(R.id.searchButton);
 
         // ListViewをタップしたときの処理
@@ -122,9 +125,13 @@ public class MainActivity extends AppCompatActivity {
         });
         //検索処理
         searchButton.setOnClickListener(new AdapterView.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-
+                String text = searchEdit.getText().toString();
+                    RealmResults<Task> results = mRealm.where(Task.class).equalTo("category", text).findAll();
+                    mTaskRealmResults = results;
+                    reloadListView();
             }
         });
         reloadListView();
