@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // ListViewの設定
         mTaskAdapter = new TaskAdapter(MainActivity.this);
         mListView = (ListView) findViewById(R.id.listView1);
-        searchEdit = (EditText) findViewById(R.id.category_edit_text);
+        searchEdit = (EditText) findViewById(R.id.searchEdit);
         searchButton = (Button) findViewById(R.id.searchButton);
 
         // ListViewをタップしたときの処理
@@ -129,9 +130,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String text = searchEdit.getText().toString();
+                if(text != null) {
                     RealmResults<Task> results = mRealm.where(Task.class).equalTo("category", text).findAll();
                     mTaskRealmResults = results;
                     reloadListView();
+                }else{
+                    Toast.makeText(MainActivity.this,"入力してください",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         reloadListView();
