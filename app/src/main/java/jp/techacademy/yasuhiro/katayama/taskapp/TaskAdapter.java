@@ -51,7 +51,7 @@ public class TaskAdapter extends BaseAdapter {
             convertView = mLayoutInflater.inflate(android.R.layout.simple_list_item_2, null);
         }
 
-        TextView textView1 = (TextView)convertView.findViewById(android.R.id.text1);
+        TextView textView1 = (TextView) convertView.findViewById(android.R.id.text1);
         TextView textView2 = (TextView) convertView.findViewById(android.R.id.text2);
 
         // 後でTaskクラスから情報を取得するように変更する
